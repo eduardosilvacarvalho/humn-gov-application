@@ -31,6 +31,24 @@ O HumanGov Application tem como objetivo desenvolver uma solução tecnológica 
 - [ ] Integração com IA
 - [ ] Implantação em nuvem
 
+## Arquitetura Proposta
+
+```text
+Usuário
+    │
+    ▼
+Frontend Web
+    │
+    ▼
+Backend API
+    │
+    ├── Banco de Dados
+    │
+    ├── Inteligência Artificial
+    │
+    └── Serviços em Nuvem
+```
+
 ## Status
 
 🚧 Em desenvolvimento
