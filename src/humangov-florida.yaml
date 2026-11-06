@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: humangov-python-app-florida
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: humangov-python-app-florida
+  template:
+    metadata:
+      labels:
+        app: humangov-python-app-florida
+    spec:
+      serviceAccountName: humangov-pod-execution-role
+      containers:
+      - name: humangov-python-app-florida
+        image: 820242922478.dkr.ecr.us-east-1.amazonaws.com/humangov-app:latest
+        env:
+        - name: AWS_BUCKET
+          value: "humangov-florida-s3-q1v5"
+        - name: AWS_DYNAMODB_TABLE
+          value: "humangov-florida-dynamodb"
+        - name: AWS_REGION
+          value: "us-east-1"
+        - name: US_STATE
+          value: "florida"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: humangov-python-app-service-florida
+spec:
+  type: ClusterIP
+  selector:
+    app: humangov-python-app-florida
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: humangov-python-app-california
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: humangov-python-app-california
+  template:
+    metadata:
+      labels:
+        app: humangov-python-app-california
+    spec:
+      serviceAccountName: humangov-pod-execution-role
+      containers:
+      - name: humangov-python-app-california
+        image: 820242922478.dkr.ecr.us-east-1.amazonaws.com/humangov-app:latest
+        env:
+        - name: AWS_BUCKET
+          value: "humangov-california-s3-14fl"
+        - name: AWS_DYNAMODB_TABLE
+          value: "humangov-california-dynamodb"
+        - name: AWS_REGION
+          value: "us-east-1"
+        - name: US_STATE
+          value: "california"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: humangov-python-app-service-california
+spec:
+  type: ClusterIP
+  selector:
+    app: humangov-python-app-california
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
